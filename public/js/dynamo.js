@@ -2,30 +2,33 @@
 (function() {
 
   jQuery(function() {
-    var dynamo_api_url, dynamo_config_url, getConfig, getData, index, length, mediaNature, poll, pollCount, processData, server, token;
+    var dynamo_config_url, getConfig, getData, index, length, mediaNature, poll, pollCount, processData, server, token;
     index = 1;
     length = 21;
     mediaNature = 'IMAGE';
-    server = 'memory-life.com';
-    token = '97be50d4-80c8-422b-b91f-53c5ce5d0020';
+    server = '';
+    token = '';
     pollCount = 0;
-    dynamo_config_url = "http://rmn.memory-life.com/Connect/?msidn=prod";
-    dynamo_api_url = "http://api." + server + "/v2.0/?method=ml.account.medias.list&token=" + token + "&index=" + index + "&length=" + length + "&mediaNature=" + mediaNature;
-    getConfig = function() {
-      var request;
-      request = $.get("http://rmn.memory-life.com/Connect/?msidn=prod");
-      request.done(function(data) {
-        return getData(data);
-      });
-      return request.fail(function(jqXHR, textStatus, errorThrown) {
-        return $('#dynamo-loading').text("Problem loading config: " + errorThrown + ".");
-      });
-    };
+    dynamo_config_url = "/connection";
     poll = function() {
       return setTimeout(getData, 5000);
     };
-    getData = function() {
+    getConfig = function() {
       var request;
+      request = $.get(dynamo_config_url);
+      request.fail(function(jqXHR, textStatus, errorThrown) {
+        return $('#dynamo-loading').text("Problem loading config: " + errorThrown + ".");
+      });
+      return request.done(function(data) {
+        $('#dynamo-loading').text("Loading data...");
+        server = $(data).find("config > server").attr("href");
+        token = $(data).find("config > token").text();
+        return getData();
+      });
+    };
+    getData = function() {
+      var dynamo_api_url, request;
+      dynamo_api_url = "http://api." + server + "/v2.0/?method=ml.account.medias.list&token=" + token + "&index=" + index + "&length=" + length + "&mediaNature=" + mediaNature;
       request = $.get(dynamo_api_url);
       request.done(function(data) {
         return processData(data);
@@ -38,6 +41,7 @@
       var column, eachImage, i, url, _i, _len, _ref;
       pollCount += 1;
       $('#dynamo-loading').text("Successfully loaded data " + pollCount + " times.");
+      console.log(data);
       $("#column_1, #column_2, #column_3, #column_4").empty();
       _ref = $(data).find("image");
       for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
@@ -48,7 +52,7 @@
       }
       return poll();
     };
-    return getData();
+    return getConfig();
   });
 
 }).call(this);

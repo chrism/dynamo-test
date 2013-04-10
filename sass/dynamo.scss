@@ -1,8 +1,11 @@
 @import 'bourbon/bourbon';
 @import 'normalize';
 
-#wrapper {
+body {
   background-color: #000;
+}
+
+#wrapper { 
   min-height: 100%;
 }
 

@@ -18,19 +18,27 @@ jQuery ->
 
   # needs sinatra to proxy for now because of JS security issue :()
   getConfig = ->
-    request = $.get dynamo_config_url
-    request.fail (jqXHR, textStatus, errorThrown) -> $('#dynamo-loading').text "Problem loading config: #{errorThrown}."
-    request.done (data) ->
-      $('#dynamo-loading').text "Loading data..."
-      server = $(data).find("config > server").attr("href")
-      token = $(data).find("config > token").text()
-      getData()
+    request = $.ajax dynamo_config_url,
+      type: 'GET'
+      dataType: 'xml'
+      error: (jqXHR, textStatus, errorThrown) ->
+        $('#dynamo-loading').text "Problem loading config: #{errorThrown}."
+      success: (data, textStatus, jqXHR) ->
+        $('#dynamo-loading').text "Loading data..."
+        server = $(data).find("config > server").attr("href")
+        token = $(data).find("config > token").text()
+        getData()
+
 
   getData = ->    
     dynamo_api_url = "http://api.#{server}/v2.0/?method=ml.account.medias.list&token=#{token}&index=#{index}&length=#{length}&mediaNature=#{mediaNature}"   
-    request = $.get dynamo_api_url
-    request.done (data) -> processData data
-    request.fail (jqXHR, textStatus, errorThrown) -> $('#dynamo-loading').text "Problem loading data: #{errorThrown}."
+    request = $.ajax dynamo_api_url,
+      type: 'GET'
+      dataType: 'xml'
+      error: (jqXHR, textStatus, errorThrown) ->
+        $('#dynamo-loading').text "Problem loading data: #{errorThrown}."
+      success: (data, textStatus, jqXHR) ->
+        processData data
 
   processData = (data) ->
 

@@ -16,26 +16,32 @@
     };
     getConfig = function() {
       var request;
-      request = $.get(dynamo_config_url);
-      request.fail(function(jqXHR, textStatus, errorThrown) {
-        return $('#dynamo-loading').text("Problem loading config: " + errorThrown + ".");
-      });
-      return request.done(function(data) {
-        $('#dynamo-loading').text("Loading data...");
-        server = $(data).find("config > server").attr("href");
-        token = $(data).find("config > token").text();
-        return getData();
+      return request = $.ajax(dynamo_config_url, {
+        type: 'GET',
+        dataType: 'xml',
+        error: function(jqXHR, textStatus, errorThrown) {
+          return $('#dynamo-loading').text("Problem loading config: " + errorThrown + ".");
+        },
+        success: function(data, textStatus, jqXHR) {
+          $('#dynamo-loading').text("Loading data...");
+          server = $(data).find("config > server").attr("href");
+          token = $(data).find("config > token").text();
+          return getData();
+        }
       });
     };
     getData = function() {
       var dynamo_api_url, request;
       dynamo_api_url = "http://api." + server + "/v2.0/?method=ml.account.medias.list&token=" + token + "&index=" + index + "&length=" + length + "&mediaNature=" + mediaNature;
-      request = $.get(dynamo_api_url);
-      request.done(function(data) {
-        return processData(data);
-      });
-      return request.fail(function(jqXHR, textStatus, errorThrown) {
-        return $('#dynamo-loading').text("Problem loading data: " + errorThrown + ".");
+      return request = $.ajax(dynamo_api_url, {
+        type: 'GET',
+        dataType: 'xml',
+        error: function(jqXHR, textStatus, errorThrown) {
+          return $('#dynamo-loading').text("Problem loading data: " + errorThrown + ".");
+        },
+        success: function(data, textStatus, jqXHR) {
+          return processData(data);
+        }
       });
     };
     processData = function(data) {

@@ -36,6 +36,7 @@ jQuery ->
     console.log data
     $("#column_1, #column_2, #column_3, #column_4").empty()
     for eachImage, i in $(data).find("image")
+      console.log $(eachImage).attr('urlOriginalFile')
       url = if i < 1 then $(eachImage).attr('url') else $(eachImage).attr('urlThumbnail')
       column = if i < 3 then 1 else if i < 7 then 2 else if i < 14 then 3 else 4
       $("#column_#{column}").append("<div><img id='id_#{i}' src='#{url}' /></div>")

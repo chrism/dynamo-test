@@ -46,6 +46,7 @@
       _ref = $(data).find("image");
       for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
         eachImage = _ref[i];
+        console.log($(eachImage).attr('urlOriginalFile'));
         url = i < 1 ? $(eachImage).attr('url') : $(eachImage).attr('urlThumbnail');
         column = i < 3 ? 1 : i < 7 ? 2 : i < 14 ? 3 : 4;
         $("#column_" + column).append("<div><img id='id_" + i + "' src='" + url + "' /></div>");

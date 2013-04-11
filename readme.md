@@ -1,5 +1,9 @@
 # Dynamo Images Test
 
+View online at
+
+http://dynamo-test.herokuapp.com/
+
 ## Introduction
 
 This is a quick proof of concept which pulls images from the Orange Valley WM1 feed of the Dynamo images and displays them in a way similar to the exhibition display.

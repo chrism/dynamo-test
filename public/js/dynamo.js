@@ -23,21 +23,21 @@
           return $('#dynamo-loading').text("Problem loading config: " + errorThrown + ".");
         },
         success: function(data, textStatus, jqXHR) {
-          $('#dynamo-loading').text("Loading data...");
           server = $(data).find("config > server").attr("href");
           token = $(data).find("config > token").text();
+          $('#dynamo-loading').text("Loading data...");
           return getData();
         }
       });
     };
     getData = function() {
       var dynamo_api_url, request;
-      dynamo_api_url = "http://api." + server + "/v2.0/?method=ml.account.medias.list&token=" + token + "&index=" + index + "&length=" + length + "&mediaNature=" + mediaNature;
+      dynamo_api_url = "/data/" + token;
       return request = $.ajax(dynamo_api_url, {
         type: 'GET',
         dataType: 'xml',
         error: function(jqXHR, textStatus, errorThrown) {
-          return $('#dynamo-loading').text("Problem loading data: " + errorThrown + ".");
+          return $('#dynamo-loading').text("Problem loading data: " + errorThrown + ".    " + dynamo_api_url);
         },
         success: function(data, textStatus, jqXHR) {
           return processData(data);
@@ -45,19 +45,24 @@
       });
     };
     processData = function(data) {
-      var column, eachImage, i, url, _i, _len, _ref;
-      console.log("is this XML? " + (jQuery.isXMLDoc(data)));
-      pollCount += 1;
-      $('#dynamo-loading').text("Successfully loaded data " + pollCount + " times.");
-      console.log(data);
-      $("#column_1, #column_2, #column_3, #column_4").empty();
+      var column, eachImage, i, original_url, url, _i, _len, _ref;
+      $('#dynamo-loading').text("Successfully loaded data " + (pollCount + 1) + " times.");
       _ref = $(data).find("image");
       for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
         eachImage = _ref[i];
+        original_url = $(eachImage).attr('urlOriginalFile');
         url = i < 1 ? $(eachImage).attr('url') : $(eachImage).attr('urlThumbnail');
         column = i < 3 ? 1 : i < 7 ? 2 : i < 14 ? 3 : 4;
-        $("#column_" + column).append("<div><img id='id_" + i + "' src='" + url + "' /></div>");
+        if (pollCount < 1) {
+          $("#column_" + column).append("<div id='item_" + i + "'><a href='" + original_url + "'><img id='image_" + i + "' src='" + url + "' /></a></div>");
+        } else {
+          if (url !== $("#image_" + i)[0].src) {
+            $("#item_" + i + " img").attr("src", url).stop(true, true).hide().fadeIn();
+            $("#item_" + i + " a").attr("href", "" + original_url);
+          }
+        }
       }
+      pollCount += 1;
       return poll();
     };
     return getConfig();

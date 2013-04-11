@@ -431,24 +431,29 @@ body {
   min-height: 100%; }
 
 .content {
-  max-width: 1200px;
   margin: 0 auto; }
 
 #dynamo-loading {
-  color: white;
+  color: #666666;
   font-size: 0.8em; }
 
 #grid {
-  padding: 1em 0;
   display: block;
-  width: 100%; }
+  width: 100%;
+  overflow: hidden; }
+  #grid img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    min-height: 100%; }
   #grid div {
     margin: 0;
     padding: 0;
-    display: inline-block;
     position: relative;
     vertical-align: top; }
     #grid div#column_1 {
+      float: left;
       width: 55.52699%; }
       #grid div#column_1 div:first-child {
         display: block;
@@ -458,10 +463,12 @@ body {
         width: 100%;
         overflow: hidden; }
       #grid div#column_1 div {
+        float: left;
         width: 50%;
         padding-bottom: 33.33333%;
         overflow: hidden; }
     #grid div#column_2 {
+      float: left;
       width: 20.82262%; }
       #grid div#column_2 div {
         display: block;
@@ -469,15 +476,10 @@ body {
         padding-bottom: 66.66667%;
         overflow: hidden; }
     #grid div#column_3, #grid div#column_4 {
+      float: left;
       width: 11.82519%; }
       #grid div#column_3 div, #grid div#column_4 div {
         display: block;
         position: relative;
         padding-bottom: 66.91358%;
         overflow: hidden; }
-  #grid img {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    min-height: 100%; }

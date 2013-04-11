@@ -9,26 +9,35 @@ body {
 }
 
 .content {
-  max-width: 1200px; 
+  // max-width: 1200px; 
   margin: 0 auto;
 }
 
 #dynamo-loading {
-  color: white;
+  color: #666666;
   font-size: 0.8em;
 }
 
 #grid {
-  padding: 1em 0;
   display: block;
   width: 100%;
+  overflow: hidden;
+
+  img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    min-height: 100%;
+  }
+
   div {
     margin: 0;
     padding: 0;
-    display: inline-block;
     position: relative;
     vertical-align: top;    
     &#column_1 {
+      float: left;
       width: 1080/1945*100%;
       div:first-child {
         display: block;
@@ -39,13 +48,15 @@ body {
         overflow: hidden;
       }
       div {
+        float: left;
         width: 50%;
         padding-bottom: 360/1080*100%;
-        overflow: hidden;
+        overflow: hidden;        
       }
     }
 
     &#column_2 {
+      float: left;
       width: 405/1945*100%;
       div {
         display: block;
@@ -56,6 +67,7 @@ body {
     }
 
     &#column_3, &#column_4 {
+      float: left;
       width: 230/1945*100%;
       div {
         display: block;
@@ -64,13 +76,5 @@ body {
         overflow: hidden;
       }
     }
-  }
-
-  img {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    min-height: 100%;
   }
 }
